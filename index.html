@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>波蘭出差用餐行程 · Wrocław / Warszawa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Noto+Serif+TC:wght@500;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#F6F0E4;
+    --cream-2:#EFE6D3;
+    --navy:#1B365D;
+    --navy-2:#274972;
+    --wine:#7B2D3B;
+    --wine-2:#9A3B4C;
+    --ink:#2B2620;
+    --muted:#6B6355;
+    --card:#FFFDF8;
+    --gold:#B08C4F;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--ink);
+    font-family:"Noto Sans TC", "Noto Serif TC", sans-serif;
+    -webkit-font-smoothing:antialiased;
+    padding-bottom:60px;
+  }
+  header.page-head{
+    background:linear-gradient(135deg, var(--navy) 0%, var(--navy-2) 60%, var(--wine) 130%);
+    color:#fff;
+    padding:36px 20px 30px;
+    text-align:center;
+    border-bottom:4px solid var(--gold);
+  }
+  header.page-head h1{
+    font-family:"Playfair Display","Noto Serif TC",serif;
+    font-size:1.6rem;
+    margin:0 0 6px;
+    letter-spacing:0.5px;
+  }
+  header.page-head p.sub{
+    margin:4px 0 0;
+    font-size:0.9rem;
+    opacity:0.85;
+    font-weight:400;
+  }
+  .route-line{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    margin-top:14px;
+    font-size:0.95rem;
+    font-weight:700;
+    letter-spacing:1px;
+  }
+  .route-line span.city{
+    background:rgba(255,255,255,0.15);
+    padding:6px 14px;
+    border-radius:20px;
+    border:1px solid rgba(255,255,255,0.35);
+  }
+  .route-line span.arrow{ opacity:0.75; }
+
+  .notes-box{
+    max-width:640px;
+    margin:-18px auto 0;
+    background:var(--card);
+    border:1px solid var(--cream-2);
+    border-left:5px solid var(--wine);
+    border-radius:10px;
+    padding:16px 18px;
+    box-shadow:0 6px 18px rgba(27,54,93,0.12);
+    position:relative;
+    font-size:0.85rem;
+    color:var(--muted);
+    line-height:1.6;
+  }
+  .notes-box b{ color:var(--wine); }
+  .notes-box .fix-note{
+    display:block;
+    margin-top:8px;
+    padding-top:8px;
+    border-top:1px dashed var(--cream-2);
+    font-size:0.78rem;
+  }
+
+  main{
+    max-width:640px;
+    margin:34px auto 0;
+    padding:0 16px;
+  }
+
+  .day-header{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    margin:34px 0 14px;
+    padding-bottom:8px;
+    border-bottom:2px solid var(--gold);
+  }
+  .day-header:first-of-type{ margin-top:0; }
+  .day-header .date{
+    font-family:"Playfair Display","Noto Serif TC",serif;
+    font-size:1.25rem;
+    color:var(--navy);
+    font-weight:700;
+  }
+  .day-header .weekday{
+    font-size:0.85rem;
+    color:var(--wine);
+    font-weight:700;
+  }
+  .day-header .city-tag{
+    margin-left:auto;
+    font-size:0.78rem;
+    background:var(--navy);
+    color:#fff;
+    padding:4px 10px;
+    border-radius:14px;
+    letter-spacing:1px;
+  }
+
+  .card{
+    background:var(--card);
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(43,38,32,0.10);
+    margin-bottom:22px;
+    overflow:hidden;
+    border:1px solid #EFE7D6;
+    position:relative;
+  }
+  .card.low-priority{ opacity:0.92; }
+
+  .card-top{
+    position:relative;
+    background:linear-gradient(120deg, var(--cream-2), #E4D8C0);
+    height:150px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--muted);
+  }
+  .card-top img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+  }
+  .img-placeholder{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:6px;
+    font-size:0.78rem;
+    color:var(--muted);
+  }
+  .img-placeholder .icon{ font-size:1.8rem; }
+
+  .meal-tag{
+    position:absolute;
+    top:12px;
+    right:12px;
+    font-size:0.72rem;
+    font-weight:700;
+    padding:5px 12px;
+    border-radius:20px;
+    color:#fff;
+    letter-spacing:1px;
+    box-shadow:0 3px 8px rgba(0,0,0,0.2);
+    z-index:2;
+  }
+  .meal-tag.lunch{ background:var(--navy); }
+  .meal-tag.dinner{ background:var(--wine); }
+  .meal-tag.brunch{ background:var(--gold); }
+
+  .priority-flag{
+    position:absolute;
+    top:12px;
+    left:12px;
+    background:rgba(255,255,255,0.92);
+    color:var(--wine);
+    font-size:0.68rem;
+    font-weight:700;
+    padding:4px 9px;
+    border-radius:14px;
+    z-index:2;
+  }
+
+  .card-body{ padding:18px 20px 20px; }
+
+  .rest-name{
+    font-family:"Playfair Display","Noto Serif TC",serif;
+    font-size:1.25rem;
+    color:var(--navy);
+    margin:0 0 4px;
+    font-weight:700;
+  }
+  .meta-line{
+    font-size:0.85rem;
+    color:var(--muted);
+    margin-bottom:2px;
+  }
+  .meta-line .dot{ margin:0 6px; opacity:0.6; }
+
+  .section{
+    margin-top:14px;
+    padding-top:12px;
+    border-top:1px solid #F0E9DA;
+  }
+  .section-label{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-size:0.78rem;
+    font-weight:700;
+    color:var(--wine);
+    margin-bottom:5px;
+    letter-spacing:0.5px;
+  }
+  .section p{
+    margin:0;
+    font-size:0.88rem;
+    line-height:1.65;
+    color:var(--ink);
+  }
+
+  .website-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    margin-top:16px;
+    background:var(--navy);
+    color:#fff !important;
+    text-decoration:none;
+    font-size:0.85rem;
+    font-weight:700;
+    padding:10px 18px;
+    border-radius:24px;
+    transition:background 0.2s;
+  }
+  .website-btn:hover{ background:var(--wine); }
+
+  footer{
+    text-align:center;
+    font-size:0.75rem;
+    color:var(--muted);
+    margin-top:30px;
+    padding:0 20px;
+    line-height:1.7;
+  }
+</style>
+</head>
+<body>
+
+<header class="page-head">
+  <h1>波蘭出差用餐行程</h1>
+  <p class="sub">2026 · 9/30 – 10/3　顧問客戶餐敘準備資料</p>
+  <div class="route-line">
+    <span class="city">Warszawa 華沙</span>
+    <span class="arrow">→</span>
+    <span class="city">Wrocław</span>
+    <span class="arrow">→</span>
+    <span class="city">Warszawa 華沙</span>
+  </div>
+</header>
+
+<div class="notes-box">
+  <b>行程備註：</b> 晚餐是本次出差的主要體驗重點，各餐廳皆有值得跟客戶分享的故事背景。週六（10/3）上午的早午餐行程優先度較低，可視客戶時間彈性調整。
+  <span class="fix-note">＊ 原信件將 9/30 誤植為「9/29」，本頁已修正為正確日期 9/30；行程順序亦已依實際安排調整為「先華沙、後 Wrocław」。</span>
+</div>
+
+<main>
+
+  <!-- 9/30 Warszawa -->
+  <div class="day-header">
+    <span class="date">9/30</span>
+    <span class="weekday">星期三</span>
+    <span class="city-tag">Warszawa</span>
+  </div>
+
+  <div class="card">
+    <div class="card-top">
+      <span class="meal-tag lunch">午餐</span>
+      <div class="img-placeholder">
+        <span class="icon">🏙️</span>
+        <span>圖片待補（可自行提供）</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <h2 class="rest-name">Concept 13</h2>
+      <div class="meta-line">9/30（三）13:00</div>
+      <div class="meta-line">ul. Bracka 9，DH Vitkac 百貨 5 樓，Warszawa</div>
+
+      <div class="section">
+        <div class="section-label">📖 記憶點與故事</div>
+        <p>位於波蘭最頂級的精品百貨 Vitkac 最高樓層，整片玻璃打造的用餐空間可俯瞰華沙市中心屋頂全景。以開放式廚房與鐵板燒（teppanyaki）概念聞名，是建築師、設計師與商界領袖鍾愛的商務聚餐地點。</p>
+      </div>
+      <div class="section">
+        <div class="section-label">🍽 餐點風格</div>
+        <p>融合波蘭元素的國際料理，鐵板燒 / 開放式廚房現場呈現</p>
+      </div>
+      <div class="section">
+        <div class="section-label">⭐ 菜單經典</div>
+        <p>官網未列出固定菜單（依季節更換），可現場請主廚推薦當日 Tasting / Degustation Menu；曾有客人評論提及沙丁魚、義式麵疙瘩（gnocchi）、小牛排等菜式，建議入座後詢問當日精選。</p>
+      </div>
+      <div class="section">
+        <div class="section-label">📍 餐廳周圍</div>
+        <p>緊鄰 Vitkac 百貨精品樓層，位於華沙市中心核心商圈，適合會後直接步行前往。</p>
+      </div>
+      <div class="section">
+        <div class="section-label">🎨 餐廳裝潢</div>
+        <p>大片落地玻璃帷幕，俯瞰城市天際線，另設有露天座位區與雪茄吧，氛圍時尚洗練。</p>
+      </div>
+
+      <a class="website-btn" href="https://hotel.com.pl/pl/restauracja-concept-13" target="_blank" rel="noopener">🔗 前往官網</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-top">
+      <span class="meal-tag dinner">晚餐</span>
+      <div class="img-placeholder">
+        <span class="icon">🏛️</span>
+        <span>圖片待補（可自行提供）</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <h2 class="rest-name">Restauracja Warszawska</h2>
+      <div class="meta-line">9/30（三）16:00　<span class="dot">·</span>提早晚餐</div>
+      <div class="meta-line">Plac Powstańców Warszawy 9，Hotel Warszawa（Prudential 大樓）</div>
+
+      <div class="section">
+        <div class="section-label">📖 記憶點與故事</div>
+        <p>坐落在 Prudential 大樓內——1933 年落成時是歐洲第二高的摩天大樓，二戰華沙起義中歷經戰火卻屹立不搖，成為華沙堅韌精神的象徵。如今化身五星級 Hotel Warszawa，餐廳保留了原始建築地基與粗獷的清水混凝土結構。</p>
+      </div>
+      <div class="section">
+        <div class="section-label">🍽 餐點風格</div>
+        <p>現代波蘭料理，強調在地小農食材與自家醃燻工藝</p>
+      </div>
+      <div class="section">
+        <div class="section-label">⭐ 菜單經典</div>
+        <p>豬肉抹醬（rillette）、薄荷醃鰆魚、菇菌肉醬（pâté）、波蘭炸豬排配韃靼醬；甜點推薦拿破崙千層酥（Napoleonka）與藏茴香忌廉甜甜圈。肉品皆來自自家距華沙 100 公里的專屬農場，自行醃燻熟成。</p>
+      </div>
+      <div class="section">
+        <div class="section-label">📍 餐廳周圍</div>
+        <p>位於 Prudential 大樓 / Hotel Warszawa 內，鄰近華沙市中心，抵達當日下午即可步行前往，方便銜接晚間行程。</p>
+      </div>
+      <div class="section">
+        <div class="section-label">🎨 餐廳裝潢</div>
+        <p>戰前風格內裝，開放式玻璃廚房，保留原始建築結構，搭配粗獷混凝土與波蘭大理石，並設有自家烘焙坊與煙燻房。</p>
+      </div>
+
+      <a class="website-btn" href="https://warszawa.hotel.com.pl/restauracje" target="_blank" rel="noopener">🔗 前往官網</a>
+    </div>
+  </div>
+
+  <!-- 10/1 Wroclaw -->
+  <div class="day-header">
+    <span class="date">10/1</span>
+    <span class="weekday">星期四</span>
+    <span class="city-tag">Wrocław</span>
+  </div>
+
+  <div class="card">
+    <div class="card-top">
+      <span class="meal-tag lunch">午餐</span>
+      <div class="img-placeholder">
+        <span class="icon">🏰</span>
+        <span>圖片待補（可自行提供）</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <h2 class="rest-name">Wierzbowa 15</h2>
+      <div class="meta-line">10/1（四）13:00</div>
+      <div class="meta-line">ul. Wierzbowa 15（Leipziger Palace / Altus Palace），距辦公室約 700m，步行 10 分</div>
+
+      <div class="section">
+        <div class="section-label">📖 記憶點與故事</div>
+        <p>坐落於修復完成的 19 世紀萊比錡宮（Leipziger Palace），歷史磚造建築與前衛精緻餐飲交融，窗外正對 Wrocław 最富詩意的垂柳景致。主廚 Yassin Bugajny 在兩顆米其林星的西班牙名廚 Juan Luis Fernández 指導下，將波蘭當季在地食材淬鍊成世界級料理，並入選米其林指南推薦名單。餐廳緊鄰 1571 年建造的城市要塞 Bastion Sakwowy，該古蹟已於 2024 年 6 月整修重新開放為公園與文化空間。</p>
+      </div>
+      <div class="section">
+        <div class="section-label">🍽 餐點風格</div>
+        <p>精緻餐飲，波蘭根源與西班牙靈魂的融合料理</p>
+      </div>
+      <div class="section">
+        <div class="section-label">⭐ 菜單經典</div>
+        <p>松露牛肉薄片、時令煙燻魚佐果仁糖、奶油酸豆鱒魚、松露馬鈴薯牛肋排、菇菌蛋黃奶酪（panna cotta）；品嚐套餐以「Duende」為主題，分五幕呈現。</p>
+      </div>
+      <div class="section">
+        <div class="section-label">📍 餐廳周圍</div>
+        <p>緊鄰歷史要塞 Bastion Sakwowy，2024 年重新開放為公園、觀景平台與文化空間，餐前餐後皆適合散步。</p>
+      </div>
+      <div class="section">
+        <div class="section-label">🎨 餐廳裝潢</div>
+        <p>白色卡拉拉大理石樓梯、灰泥雕飾、玻璃中庭與昔日的鏡廳舞廳，座落於五星級 Altus Palace 酒店內，氛圍典雅奢華。</p>
+      </div>
+
+      <a class="website-btn" href="https://wierzbowa15.pl" target="_blank" rel="noopener">🔗 前往官網</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-top">
+      <span class="meal-tag dinner">晚餐</span>
+      <div class="img-placeholder">
+        <span class="icon">⛲</span>
+        <span>圖片待補（可自行提供）</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <h2 class="rest-name">Restauracja Tarasowa</h2>
+      <div class="meta-line">10/1（四）17:00</div>
+      <div class="meta-line">ul. Wystawowa 1（百年廳園區），距辦公室約 3.3km，建議搭計程車</div>
+
+      <div class="section">
+        <div class="section-label">📖 記憶點與故事</div>
+        <p>面向多媒體噴泉與花園長廊（Pergola），背景是 1913 年建成的世界文化遺產「百年廳」（Centennial Hall）。啟用當時，其鋼筋混凝土穹頂是史上跨度最大的建築，施工工人一度嚇得拒絕進入現場，深信建築會瞬間坍塌。如今這座工程奇蹟迎接過教宗若望保祿二世，以及無數科技創辦人與企業高層，是與客戶用餐時絕佳的話題。</p>
+      </div>
+      <div class="section">
+        <div class="section-label">🍽 餐點風格</div>
+        <p>現代波蘭料理，強調當季在地食材，菜單每季更新</p>
+      </div>
+      <div class="section">
+        <div class="section-label">⭐ 菜單經典</div>
+        <p>菇菌酸湯佐煙燻鴨肉波蘭餃、傳統黑血湯（czernina）、南瓜馬鈴薯疙瘩、鑲餡兔肉、素食版血腸、西利西亞天堂甜點（śląskie niebo）、梭鱸魚料理。</p>
+      </div>
+      <div class="section">
+        <div class="section-label">📍 餐廳周圍</div>
+        <p>緊鄰世界文化遺產百年廳、多媒體噴泉與 Pergola 花園長廊，餐後可安排散步欣賞夜間燈光噴泉秀。</p>
+      </div>
+      <div class="section">
+        <div class="section-label">🎨 餐廳裝潢</div>
+        <p>露天露台直面百年廳與噴泉景致，現代簡約風格，適合欣賞日落晚宴。</p>
+      </div>
+
+      <a class="website-btn" href="https://restauracjatarasowa.pl" target="_blank" rel="noopener">🔗 前往官網</a>
+    </div>
+  </div>
+
+  <!-- 10/2 Wroclaw -->
+  <div class="day-header">
+    <span class="date">10/2</span>
+    <span class="weekday">星期五</span>
+    <span class="city-tag">Wrocław</span>
+  </div>
+
+  <div class="card">
+    <div class="card-top">
+      <span class="meal-tag lunch">午餐</span>
+      <div class="img-placeholder">
+        <span class="icon">🕊️</span>
+        <span>圖片待補（可自行提供）</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <h2 class="rest-name">Restauracja Monopol</h2>
+      <div class="meta-line">10/2（五）13:00</div>
+      <div class="meta-line">ul. Heleny Modrzejewskiej 2（Hotel Monopol），距辦公室約 1km，步行 13 分</div>
+
+      <div class="section">
+        <div class="section-label">📖 記憶點與故事</div>
+        <p>坐落於 Wrocław 傳奇五星級 Hotel Monopol，承載超過百年的文化與商業歷史。1948 年「世界知識分子和平大會」期間，畢卡索曾入住此地，畫布用盡後，直接在飯店床單上畫下他著名的和平鴿手稿。這座歷史殿堂曾接待過瑪蓮・黛德麗，至今仍持續迎接全球商界巨頭，是很好的破冰話題。</p>
+      </div>
+      <div class="section">
+        <div class="section-label">🍽 餐點風格</div>
+        <p>傳統波蘭料理的現代詮釋，經典菜式搭配創新手法</p>
+      </div>
+      <div class="section">
+        <div class="section-label">⭐ 菜單經典</div>
+        <p>官網未列出固定招牌菜名，以「傳統波蘭菜的創新演繹」與豐盛套餐為特色，建議入座後請服務生介紹當日精選菜單。</p>
+      </div>
+      <div class="section">
+        <div class="section-label">📍 餐廳周圍</div>
+        <p>位於 Wrocław 市中心歷史街區，鄰近舊城廣場，方便會後散步。</p>
+      </div>
+      <div class="section">
+        <div class="section-label">🎨 餐廳裝潢</div>
+        <p>五星級歷史飯店內的優雅餐廳，古典氛圍融合現代設計質感。</p>
+      </div>
+
+      <a class="website-btn" href="https://monopolwroclaw.hotel.com.pl/hotel-monopol-wroclaw/restauracje/restauracja-monopol-wroclaw" target="_blank" rel="noopener">🔗 前往官網</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-top">
+      <span class="meal-tag dinner">晚餐</span>
+      <div class="img-placeholder">
+        <span class="icon">🌉</span>
+        <span>圖片待補（可自行提供）</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <h2 class="rest-name">Między Mostami</h2>
+      <div class="meta-line">10/2（五）17:00</div>
+      <div class="meta-line">ul. Mieszczańska 10，距辦公室約 850m，步行 11 分</div>
+
+      <div class="section">
+        <div class="section-label">📖 記憶點與故事</div>
+        <p>坐落在曾由中世紀水車與早期水力發電廠驅動的歷史河中島上，這家新獲米其林星星肯定的餐廳重新定義現代波蘭精緻餐飲。主廚復興古老的冬季保存工藝——慢發酵、柴燒煙燻、手工鹽漬——打造沉浸式的飲食體驗，訴說地方工藝如何蛻變為世界級美食藝術。</p>
+      </div>
+      <div class="section">
+        <div class="section-label">🍽 餐點風格</div>
+        <p>現代波蘭料理，Art Déco 風格餐酒館，內附一顆米其林星的品嚐套餐室「MOST」</p>
+      </div>
+      <div class="section">
+        <div class="section-label">⭐ 菜單經典</div>
+        <p>主餐廳 Sala Funk：韃靼牛肉、牛舌、血腸；米其林一星品嚐室 MOST 套餐則有甘藍榛果燉牛肉、藜麥甜菜鹿肉等（約 490 PLN / 人）。</p>
+      </div>
+      <div class="section">
+        <div class="section-label">📍 餐廳周圍</div>
+        <p>位於歷史河中島，可眺望 Piaskowa 橋與衛戍教堂塔樓，河岸夜景優美。</p>
+      </div>
+      <div class="section">
+        <div class="section-label">🎨 餐廳裝潢</div>
+        <p>Art Déco 新藝術裝飾風格，溫暖沙色調搭配橡木、石材與金屬玻璃，燈光柔和；分為開放廚房長吧枱區與私密的 Most 品嚐室兩種氛圍。</p>
+      </div>
+
+      <a class="website-btn" href="https://miedzy-mostami.pl" target="_blank" rel="noopener">🔗 前往官網</a>
+    </div>
+  </div>
+
+  <!-- 10/3 Warszawa -->
+  <div class="day-header">
+    <span class="date">10/3</span>
+    <span class="weekday">星期六</span>
+    <span class="city-tag">Warszawa</span>
+  </div>
+
+  <div class="card low-priority">
+    <div class="card-top">
+      <span class="meal-tag brunch">早午餐</span>
+      <span class="priority-flag">優先度較低</span>
+      <div class="img-placeholder">
+        <span class="icon">🌿</span>
+        <span>圖片待補（可自行提供）</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <h2 class="rest-name">Flaming &amp; Co</h2>
+      <div class="meta-line">10/3（六）10:30 / 11:00</div>
+      <div class="meta-line">ul. Fryderyka Chopina 5，Warszawa</div>
+
+      <div class="section">
+        <div class="section-label">📖 記憶點與故事</div>
+        <p>華沙上流社交圈的長青地標，隱身在南 Śródmieście 區、鄰近瑞士谷（Swiss Valley）的優雅獨棟別墅裡。設計靈感取自美式漢普頓別墅悠閒精緻的氛圍，超過 15 年來一直是外交官、商界名流與文化人士的首選聚會地點，以奢華的週末早午餐、奶油布里歐許料理與私密花園露台聞名。</p>
+      </div>
+      <div class="section">
+        <div class="section-label">🍽 餐點風格</div>
+        <p>早午餐 / 歐陸料理，漢普頓度假風格，氣氛悠閒</p>
+      </div>
+      <div class="section">
+        <div class="section-label">⭐ 菜單經典</div>
+        <p>官網未列出固定菜單；第三方評論提及班尼迪克蛋、芒果奇亞籽布丁、開放式義大利餃、鮭魚韃靼、章魚沙拉等人氣餐點，可作為推薦方向。</p>
+      </div>
+      <div class="section">
+        <div class="section-label">📍 餐廳周圍</div>
+        <p>位於南 Śródmieście 區，鄰近瑞士谷（Swiss Valley），環境靜謐優雅。</p>
+      </div>
+      <div class="section">
+        <div class="section-label">🎨 餐廳裝潢</div>
+        <p>優雅獨棟別墅，漢普頓度假風格裝潢，附設私密花園露台，適合輕鬆氛圍的收尾行程。</p>
+      </div>
+
+      <a class="website-btn" href="https://flaming-co.com" target="_blank" rel="noopener">🔗 前往官網</a>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  資料整理自 Joanna Tracz 提供之餐廳行程表信件，並補充官網 / 公開評論資料。<br>
+  （尚屬草稿版本，圖片、菜單細節可再依需求調整補充。）
+</footer>
+
+</body>
+</html>
